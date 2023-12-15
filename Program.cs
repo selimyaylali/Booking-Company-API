@@ -73,7 +73,6 @@ builder.Services.AddDbContext<SelimContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddScoped<HousesRepository>();
-builder.Services.AddScoped<HousesRepository>();
 builder.Services.AddScoped<ClientRepository>();
 
 var app = builder.Build();
@@ -90,7 +89,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 
 app.UseApiVersioning();
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
