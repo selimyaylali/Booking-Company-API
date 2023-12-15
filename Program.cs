@@ -46,7 +46,6 @@ builder.Services.AddSwaggerGen(opt =>
         }
     });
 });
-builder.Services.AddControllers();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -57,7 +56,7 @@ builder.Services.AddAuthentication(options =>
 .AddJwtBearer(options =>
 {
     options.SaveToken = true;
-    options.RequireHttpsMetadata = false;
+    options.RequireHttpsMetadata = true; 
     options.TokenValidationParameters = new TokenValidationParameters()
     {
         ValidateIssuer = true,
@@ -72,27 +71,24 @@ builder.Services.AddDbContext<SelimContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
 builder.Services.AddScoped<HousesRepository>();
 builder.Services.AddScoped<ClientRepository>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "House Booking API V1");
-        
     });
 }
-
-app.UseApiVersioning();
 
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();
